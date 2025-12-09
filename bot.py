@@ -1,10 +1,13 @@
 import discord
 import os
 import sys
-import asyncio
 import requests
 import json
+from dotenv import load_dotenv 
+from keepalive import keep_alive
 
+
+keep_alive()
 load_dotenv()
 # Get the token from the environment
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -24,14 +27,13 @@ class MyClient(discord.Client):
     async def on_ready(self):
         print('Logged on as {0}!'.format(self.user))
         print('🦊 Commands: $hello, $fox')
-        await self.change_presence(activity=discord.Game(name="$fox for fox images!"))
 
     async def on_message(self, message):
         if message.author == self.user:
             return
 
         if message.content.startswith('$hello'):
-            await message.channel.send('Hello {message.author.mention} !')
+            await message.channel.send('Hello friend !')
 
         elif message.content.startswith('$fox'):
             try:
@@ -47,19 +49,8 @@ class MyClient(discord.Client):
 
 
 # Run the bot
-async def main():
-    intents = discord.Intents.default()
-    intents.message_content = True
-    client = MyClient(intents=intents)
+intents = discord.Intents.default()
+intents.message_content = True
 
-    try:
-        await client.start(TOKEN)
-    except KeyboardInterrupt:
-        await client.close()
-    except Exception as e:
-        print(f"Bot crashed: {e}")
-        await asyncio.sleep(5)
-        await main()
-
-    if __name__ == "__main__":
-        asyncio.run(main())
+client = MyClient(intents=intents)
+client.run(TOKEN)
