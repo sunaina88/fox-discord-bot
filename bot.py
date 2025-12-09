@@ -5,6 +5,13 @@ import asyncio
 import requests
 import json
 
+load_dotenv()
+# Get the token from the environment
+TOKEN = os.getenv('DISCORD_TOKEN')
+if not TOKEN:
+    print("ERROR!")
+    sys.exit(1)
+
 
 def get_fox():
     """sends a random image of a fox"""
@@ -37,13 +44,6 @@ class MyClient(discord.Client):
                 await message.channel.send(embed=embed)
             except Exception as e:
                 await message.channel.send(f"Error: {str(e)}")
-
-
-# Get the token from the environment
-TOKEN = os.getenv('DISCORD_TOKEN')
-if not TOKEN:
-    print("❌ ERROR: DISCORD_TOKEN not set!")
-    sys.exit(1)
 
 
 # Run the bot
